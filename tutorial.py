@@ -250,3 +250,386 @@ finally:
     print("this will always print even during errors")
 
 #file detection
+import os
+path ="C:\\Users\\Desktop\\folder"
+if os.path.exists(path): #checks wether the path exists and returns boolean value
+    print("That location exists")
+    if os.path.isfile(path): #checks if its file 
+        print("This is a file")
+    elif os.path.isdir(path):#checks if its directory
+        print("This is directory")
+else:
+    print("That location doesnt exists")
+
+#read content of file
+try:
+    with open("pathtotext.txt") as file:
+        print(file.read())
+except FileNotFoundError:
+    print("That file was not found :(")
+
+#write a file
+text="hello this is si ssisf afdjfjsncjsnf fjsnjxnc"
+with open("pathtotext.txt","w") as file: #"w" for overwriting and "a" for append a file in python
+    file.write(text)
+
+#copy a file
+#copyfile() = copies contents of a file
+#copy()= copyfile()+permission mode+destination can be directory
+#copy2()=copy()+copies metadata (file's creation and modication times)
+import shutil
+shutil.copyfile("pathtosource.txt","pathtodestination") # there are two arguments source and destination 
+
+#move a file
+import os
+source="pathtosource"
+destination="pathtodestination"
+try:
+    if os.path.exists(destination):
+        print("this file already exists")
+    else:
+        os.replace(source,destination)
+        print(source + "was moved")
+except FileNotFoundError:
+    print(source +"was not found")
+
+#delete a file
+import os
+import shutil
+path="test.txt"
+try:
+    os.remove(path) #removes files
+    os.rmdir(path) # removes folder which is empty
+    shutil.rmtree(path) # removes foler and the files it contains
+except FileNotFoundError:
+    print("This file doesnt exists")
+except PermissionError:
+    print("You donot have permission to delete that, the folder is empty")
+except OSError:
+    print("You cannot delete that using that function, the folder is not empty")
+else:
+    print(path + " was deleted")
+
+#modules in python
+#a module name message.py with contents in it:
+def hello():
+    print("hello how are you")
+def bye():
+    print("bye and have a nice day")
+#now our main.py with contents in it:
+import message #to import message module
+message.hello() #when used import module , we have to use module.fucntion() to call its fuction
+import message as msg #to import message as msg 
+msg.hello() #it gets an alias name msg 
+from message import hello,bye #to import hello and bye fuction from message.py
+hello() # when used from module import fuction it will import those particular fucitons and can be called fuction()
+from message import * #to import all the function from message.py
+hello() # can all the fuction which are present in module 
+
+#rock paper scissors
+import random
+options = ("rock", "paper", "scissors")
+running = True
+while running:
+    player = None
+    computer = random.choice(options)
+    while player not in options:
+        player = input("Enter a choice (rock, paper, scissors): ")
+    print(f"Player: {player}")
+    print(f"Computer: {computer}")
+    if player == computer:
+        print("It's a tie!")
+    elif player == "rock" and computer == "scissors":
+        print("You win!")
+    elif player == "paper" and computer == "rock":
+        print("You win!")
+    elif player == "scissors" and computer == "paper":
+        print("You win!")
+    else:
+        print("You lose!")
+    if not input("Play again? (y/n): ").lower() == "y":
+        running = False
+print("Thanks for playing!")
+
+#quiz game
+def new_game():
+    guesses = []
+    correct_guesses = 0
+    question_num = 1
+    for key in questions:
+        print("-------------------------")
+        print(key)
+        for i in options[question_num-1]:
+            print(i)
+        guess = input("Enter (A, B, C, or D): ")
+        guess = guess.upper()
+        guesses.append(guess)
+        correct_guesses += check_answer(questions.get(key), guess)
+        question_num += 1
+    display_score(correct_guesses, guesses)
+-------------------------
+def check_answer(answer, guess):
+    if answer == guess:
+        print("CORRECT!")
+        return 1
+    else:
+        print("WRONG!")
+        return 0
+-------------------------
+def display_score(correct_guesses, guesses):
+    print("-------------------------")
+    print("RESULTS")
+    print("-------------------------")
+    print("Answers: ", end="")
+    for i in questions:
+        print(questions.get(i), end=" ")
+    print()
+    print("Guesses: ", end="")
+    for i in guesses:
+        print(i, end=" ")
+    print()
+    score = int((correct_guesses/len(questions))*100)
+    print("Your score is: "+str(score)+"%")
+-------------------------
+def play_again():
+    response = input("Do you want to play again? (yes or no): ")
+    response = response.upper()
+    if response == "YES":
+        return True
+    else:
+        return False
+-------------------------
+questions = {
+ "Who created Python?: ": "A",
+ "What year was Python created?: ": "B",
+ "Python is tributed to which comedy group?: ": "C",
+ "Is the Earth round?: ": "A"
+}
+options = [["A. Guido van Rossum", "B. Elon Musk", "C. Bill Gates", "D. Mark Zuckerburg"],
+          ["A. 1989", "B. 1991", "C. 2000", "D. 2016"],
+          ["A. Lonely Island", "B. Smosh", "C. Monty Python", "D. SNL"],
+          ["A. True","B. False", "C. sometimes", "D. What's Earth?"]]
+new_game()
+while play_again():
+    new_game()
+print("Byeee!")
+
+#OOPs 
+#object is an instance of a class by using programming we can create representation of reallife objects
+#we can assign attributes to objects , example of attributes is name age height .etc
+#we can assign methods to objects, think it of "action" like sleep eats gaming
+#inorder to create object we need to create class , thinl of it as blueprint that describe what type of attributes and methods our distinct object will have
+#file name main.py
+from car import Car
+car_1 = Car("Chevy","Corvette",2021,"blue")
+car_2 = Car("Ford","Mustang",2022,"red")
+print(car_1.model)
+car_1.drive()
+car_2.stop()
+#------------------------------------------------------------------
+#file name car.py
+class Car: #car is a object and there are different cars like different shape, engine , color 
+    def __init__(self,make,model,year,color): #its a special method that will construct objects for us (in other programming language this refers to as constructor) it contains unique attributes
+        self.make = make
+        self.model = model
+        self.year = year
+        self.color = color
+    def drive(self): #here "self" refers to object that is using this method
+        print("This "+self.model+" is driving")
+    def stop(self):
+        print("This "+self.model+" is stopped")
+
+#class variable vs instance variable
+#filename main.py
+from car import Car
+car_1 = Car("Chevy","Corvette",2021,"blue")
+car_2 = Car("Ford","Mustang",2022,"red")
+car_1.wheels = 2 
+print(car_1.wheels) # output -- 2 
+print(car_2.wheels) # output -- 4 
+Car.wheels = 2 # this change will affect all instance of our class Car
+print(car_1.wheels) #output -- 2 
+print(car_2.wheels) # output -- 2
+#--------------------
+#filename car.py
+class Car:
+    wheels = 4 #class variable , it will be defualt value for all objects created by class Car , and it is changeable
+    def __init__(self,make,model,year,color): #variable declared in constructor are instance variable
+        self.make = make    #instance variable are unique for all the objects created by class Car
+        self.model = model  #instance variable
+        self.year = year    #instance variable
+        self.color = color  #instance variable
+
+#inheritance
+class Animal:
+    alive = True
+    def eat(self):
+        print("This animal is eating")
+    def sleep(self):
+        print("This animal is sleeping")
+class Rabbit(Animal): #by passing class as argument, we have now made 'Animal" a parent class of child class "Rabbit" , and it will inherit all the attributes and methods that parent class has
+    def run(self):
+        print("This rabbit is running")
+class Fish(Animal):
+    def swim(self):
+        print("This fish is swimming")
+class Hawk(Animal):
+    def fly(self):
+        print("This hawk is flying")
+rabbit = Rabbit()
+fish = Fish()
+hawk = Hawk()
+print(rabbit.alive)
+fish.eat()
+hawk.sleep()
+rabbit.run()
+fish.swim()
+hawk.fly()
+
+#multilevel inheritance --  when a derived (child) class has another derived (child) class
+class Organism:
+    alive = True
+class Animal(Organism):
+    def eat(self):
+        print("This animal is eating")
+class Dog(Animal):
+    def bark(self):
+        print("This dog is barking")
+dog = Dog()
+print(dog.alive)    # inherited from the Organism class
+dog.eat()           # inherited from the Animal class
+dog.bark()          # defined in Dog class
+
+#multiple inheritance = when a child class is derived from more than one parent class
+class Prey:
+    def flee(self):
+        print("This animal flees")
+class Predator:
+    def hunt(self):
+        print("This animal is hunting")
+class Rabbit(Prey):
+    pass
+class Hawk(Predator):
+    pass
+class Fish(Prey, Predator):
+    pass
+rabbit = Rabbit()
+hawk = Hawk()
+fish = Fish()
+rabbit.flee()
+hawk.hunt()
+fish.flee()
+fish.hunt()
+
+#method overriding
+class Animal:
+    def eat(self):
+        print("This animal is eating")
+class Rabbit(Animal):
+    def eat(self):
+        print("This rabbit is eating a carrot") #this will override the method of inherited class
+rabbit = Rabbit()
+rabbit.eat() 
+
+#method chaining
+#method chaining = calling multiple methods sequentially and each call performs an action on the same object and returns self
+class Car:
+    def turn_on(self):
+        print("You start the engine")
+        return self
+    def drive(self):
+        print("You drive the car")
+        return self
+    def brake(self):
+        print("You step on the brakes")
+        return self
+    def turn_off(self):
+        print("You turn off the engine")
+        return self
+car = Car()
+car.turn_on().drive() #after adding return self in each methods this is how the code will work --> car.turn_on().drive --(after executing turn_on method it will return self which is car)--> car.drive
+car.brake().turn_off()
+#car.turn_on().drive().brake().turn_off()
+#here '\' is line continuation character
+car.turn_on()\
+    .drive()\
+    .brake()\
+    .turn_off()
+
+#super function
+#super() = Function used to give access to the methods of a parent class. Returns a temporary object of a parent class when used
+#super() gets the childe class to access to the attributes from the parents method,it doesnt override anything, but is useful when your child class needs the same attributes
+class Rectangle:
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+class Square(Rectangle):
+    def __init__(self, length, width): #this will pull lenght and width attributes from parent class
+        super().__init__(length,width)
+    def area(self):
+        return self.length*self.width
+class Cube(Rectangle):
+    def __init__(self, length, width, height):
+        super().__init__(length,width)
+        self.height = height
+    def volume(self):
+        return self.length*self.width*self.height
+square = Square(3, 3)
+cube = Cube(3, 3, 3)
+print(square.area())
+print(cube.volume())
+
+#abstract class = a class which contains one or more abstract methods.
+#abstract method = a method that has a declaration but does not have an implementation.
+#prevents a user from creating an object of that class + compels a user to override abstract methods in a child class
+#by adding abstract method, your child class will have to overide it to acctucally work (when you add implementation for "go()" in child class, it will look for go () within child class before looking for parent class)
+from abc import ABC, abstractmethod
+class Vehicle(ABC):
+    @abstractmethod
+    def go(self):
+        pass
+    @abstractmethod
+    def stop(self):
+        pass
+class Car(Vehicle):
+    def go(self):
+        print("You drive the car")
+    def stop(self):
+        print("This car is stopped")
+class Motorcycle(Vehicle):
+    def go(self):
+        print("You ride the motorcycle")
+    def stop(self):
+        print("This motorcycle is stopped")
+#vehicle = Vehicle()
+car = Car()
+motorcycle = Motorcycle()
+#vehicle.go()
+car.go()
+motorcycle.go()
+#vehicle.stop()
+car.stop()
+motorcycle.stop()
+
+#objects as arguments
+class Car:
+    color = None
+class Motorcycle:
+    color = None
+def change_color(vehicle,color):
+    vehicle.color = color
+car_1 = Car()
+car_2 = Car()
+car_3 = Car()
+bike_1 = Motorcycle()
+change_color(car_1,"red")
+change_color(car_2,"white")
+change_color(car_3,"blue")
+change_color(bike_1,"black")
+print(car_1.color)
+print(car_2.color)
+print(car_3.color)
+print(bike_1.color)
+
+#duck typing
+#
